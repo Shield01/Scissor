@@ -314,8 +314,31 @@ async def disable_shortened_url(secret_key: str, token: str = Header(default=Non
             "This resource is only available to authorized users. Kindly login and try again")
     
 
+
+"""
+    This function enables a shortened URL by activating it in the database and returning a successful
+    response or an error message.
+    
+    :param secret_key: A string representing the secret key of the shortened URL that needs to be
+    enabled
+    :type secret_key: str
+    :param token: The token parameter is a string that represents an authorization token. It is used to
+    authenticate the user making the request and ensure that they have the necessary permissions to
+    access the resource. The default value for this parameter is None, which means that it is optional
+    :type token: str
+    :param db: The parameter "db" is a dependency injection that provides a database session to the
+    function. It is used to interact with the database and perform CRUD operations. The function uses
+    the session to activate a shortened URL by secret key
+    :type db: Session
+    :return: a response object, either a successful operation response or an error response depending on
+    the outcome of the function's execution. If the request is authorized and the activation of the
+    shortened URL is successful, a successful operation response is returned with the modified admin
+    information. If the request is not authorized, an unauthorized response is raised. If there is an
+    error during the activation of the shortened URL, an
+"""
 @url_router.put("/enable_url/{secret_key}")
 async def enable_shortened_url(secret_key:str, token:str = Header(default=None), db : Session= Depends(get_db)):
+    
     authorized_request = authorize_request(token)
 
     if authorized_request["status"] == "success":

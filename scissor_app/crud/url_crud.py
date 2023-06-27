@@ -227,6 +227,17 @@ def deactivate_db_url_by_secret_key(db: Session, secret_key: str):
     
 
 def activate_db_url_by_secret_key(db: Session, secret_key: str):
+    """
+    This function activates a shortened URL by setting its "is_active" attribute to True based on a
+    given secret key.
+    
+    :param db: The database session object used to interact with the database
+    :type db: Session
+    :param secret_key: A string representing the secret key of a shortened URL
+    :type secret_key: str
+    :return: either a successful operation response or a failed operation response depending on the
+    outcome of the try-except block.
+    """
     try:
         data = get_db_url_by_secret_key(db, secret_key)
 
