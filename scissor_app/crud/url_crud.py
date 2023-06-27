@@ -224,6 +224,27 @@ def deactivate_db_url_by_secret_key(db: Session, secret_key: str):
 
     except Exception as error:
         return responses.failed_operation_response(error)
+    
+
+def activate_db_url_by_secret_key(db: Session, secret_key: str):
+    try:
+        data = get_db_url_by_secret_key(db, secret_key)
+
+        if data["status"] == "success":
+
+            data["detail"].is_active = True
+
+            db.commit()
+
+            db.refresh(data["detail"])
+
+            return responses.successful_operation_response(data["detail"])
+
+        else:
+            return responses.failed_operation_response(f"Shortened URL with secret key : {secret_key} does not exist")
+        
+    except Exception as error:
+        return responses.failed_operation_response(error)
 
 
 def delete_db_url(db: Session, secret_key: str):

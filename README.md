@@ -16,9 +16,9 @@ Brief is the new black, this is what inspires the team at Scissor. In today's wo
 
 # API Documentation
 
-Swagger Documentation :
+Swagger Documentation : https://the-scissor-app-ce8b4bca12eb.herokuapp.com/docs
 
-Postman Documentation :
+Postman Documentation : https://documenter.getpostman.com/view/16279504/2s93z883rp
 
 # File Structure
 
@@ -53,3 +53,7 @@ Postman Documentation :
 ```
 
 # License
+
+MIT License
+
+Copyright (c) 2023 Tijani Hussein

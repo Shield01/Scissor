@@ -9,7 +9,7 @@ from ..utils.get_db import get_db
 from ..utils.auth import authorize_request
 from ..utils import responses
 from ..utils.clean_objects import clean_object_for_output
-from ..crud.url_crud import create_db_url, create_db_custom_shortened_url, delete_db_url, get_db_url_by_key, get_db_url_by_secret_key, peek_target_url_by_key, update_db_clicks, deactivate_db_url_by_secret_key
+from ..crud.url_crud import create_db_url, create_db_custom_shortened_url, delete_db_url, get_db_url_by_key, get_db_url_by_secret_key, peek_target_url_by_key, update_db_clicks, deactivate_db_url_by_secret_key, activate_db_url_by_secret_key
 from ..schemas.url_schemas import URL, URLBase, URLInfo, CustomURLBase
 from ..config import get_settings
 
@@ -298,6 +298,28 @@ async def disable_shortened_url(secret_key: str, token: str = Header(default=Non
 
     if authorized_request["status"] == "success":
         data = deactivate_db_url_by_secret_key(db, secret_key=secret_key)
+
+        if data["status"] == "success":
+            mod = get_admin_info(data["detail"])
+
+            mod = clean_object_for_output(mod)
+
+            res = responses.successful_operation_response(mod)
+
+            return res
+        else:
+            return data
+    else:
+        raise unauthorized_response(
+            "This resource is only available to authorized users. Kindly login and try again")
+    
+
+@url_router.put("/enable_url/{secret_key}")
+async def enable_shortened_url(secret_key:str, token:str = Header(default=None), db : Session= Depends(get_db)):
+    authorized_request = authorize_request(token)
+
+    if authorized_request["status"] == "success":
+        data = activate_db_url_by_secret_key(db, secret_key=secret_key)
 
         if data["status"] == "success":
             mod = get_admin_info(data["detail"])
